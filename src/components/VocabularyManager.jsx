@@ -21,7 +21,8 @@ export function VocabularyManager() {
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
 
-  const categories = [...new Set(vocabulary.map(w => w.category).filter(Boolean))];
+  const vocabList = Array.isArray(vocabulary) ? vocabulary : [];
+  const categories = [...new Set(vocabList.map(w => w.category).filter(Boolean))];
 
   useEffect(() => {
     if (reviewMode) {
@@ -30,7 +31,7 @@ export function VocabularyManager() {
       setCurrentReviewIndex(0);
       setShowAnswer(false);
     }
-  }, [reviewMode, vocabulary]);
+  }, [reviewMode, vocabList]);
 
   const resetForm = () => {
     setFormData({
@@ -78,7 +79,7 @@ export function VocabularyManager() {
     }
   };
 
-  const filteredWords = vocabulary
+  const filteredWords = vocabList
     .filter(w => {
       if (filter === 'learning') return w.mastery < 100;
       if (filter === 'mastered') return w.mastery === 100;
